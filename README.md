@@ -19,6 +19,11 @@ npm install --force
 
 ***It is important to supply the firebase config values or the web app will not work***
 
+### Run
+```
+npm start
+```
+
 ### Test
 ```
 npm test
