@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { List } from 'react-virtualized';
-import moment from 'moment';
-import 'moment-duration-format';
+
+import VideoItem from './VideoItem';
 
 const StyledList = styled(List)`
   margin-top: 10px;
@@ -14,51 +14,13 @@ const ItemContainer = styled.div`
   display: flex;
 `;
 
-const Item = styled.div`
-  padding: 10px;
-  border-bottom: 1px solid;
-  width: 100%;
-  margin: 0;
-  border-right: 1px solid;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const Description = styled.div`
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 300px;
-`;
-
-const getYoutubeUrl = (videoId) => {
-  return `https://www.youtube.com/watch?v=${videoId}`;
-};
-
-const VideoItem = ({ item }) => {
-  if (item.title && item.duration) {
-    const duration = moment.duration(item.duration);
-    return (
-      <Item>
-        <Description title={item.title}>
-          {item.title}
-        </Description>
-        <span>{duration.format('HH:mm:ss', { trim: false })}</span>
-      </Item>
-    )
-  }
-
-  return (
-    <Item>{getYoutubeUrl(item.videoId)}</Item>
-  );
-};
-
-const VideoList = ({ videos }) => {
+const VideoList = ({ videos, onDelete }) => {
   const rowRenderer = ({ key, index, style }) => {
     const item = videos[index];
+    console.log(item);
     return (
       <ItemContainer key={key} style={style} role="item">
-        <VideoItem item={item} />
+        <VideoItem item={item} onDelete={onDelete} />
       </ItemContainer>
     );
   };
@@ -69,7 +31,7 @@ const VideoList = ({ videos }) => {
       rowHeight={43}
       rowRenderer={rowRenderer}
       scrollToIndex={0}
-      width={400}
+      width={440}
       height={320}
     />
   );

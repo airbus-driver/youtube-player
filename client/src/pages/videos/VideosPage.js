@@ -22,7 +22,7 @@ const LeftContainer = styled.div`
   flex-direction: column;
   border: 1px solid;
   padding: 24px;
-  width: 400px;
+  width: 440px;
 `;
 
 const RightContainer = styled.div`
@@ -53,7 +53,10 @@ const VideosPage = () => {
 
   useEffect(() => {
     const unsubscribe = service.streamVideos((querySnapshot) => {
-      const updatedItems = querySnapshot.docs.map(doc => doc.data());
+      const updatedItems = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
       const changedItems = updatedItems.filter(x => !removedVideos.includes(x.videoId));
       setVideos(changedItems);
     },
@@ -80,6 +83,10 @@ const VideosPage = () => {
     setSelectedVideo(list?.length ? list[0] : null);
   };
 
+  const deleteHandle = (id) => {
+    service.deleteVideo(id);
+  }
+
   const onEnd = () => {
     removeCurrentVideo();
   };
@@ -92,7 +99,7 @@ const VideosPage = () => {
     <Container>
       <LeftContainer>
         <AddVideo addVideoHandler={addVideoHandle} />
-        <VideoList videos={videos} />
+        <VideoList videos={videos} onDelete={deleteHandle} />
       </LeftContainer>
       <RightContainer>
         <VideoPlayer videoId={selectedVideo?.videoId}  options={opts} onEnd={onEnd} onError={onError} />

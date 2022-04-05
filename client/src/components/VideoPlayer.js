@@ -4,8 +4,7 @@ import YouTube from 'react-youtube';
 const VideoPlayer = ({ videoId, options, onEnd, onError }) => {
   const onReady = (event) => {
     if (videoId) {
-      const result = event.target.playVideo();
-      console.log('result', result);
+      event.target.playVideo();
     }
   }
 

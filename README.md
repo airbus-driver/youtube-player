@@ -2,6 +2,8 @@
 
 Youtube player is a small web application to create and play youtube playlist
 
+***Auto play is muted because of a new security update in browsers***
+
 ## Client
 ### Install
 ```

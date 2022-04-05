@@ -4,10 +4,12 @@ import {
   collection,
   getDocs, 
   addDoc,
+  deleteDoc,
   serverTimestamp,
   query,
   orderBy,
   onSnapshot,
+  doc,
 } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -31,7 +33,10 @@ export const getVideos = async() => {
   const videosCol = collection(db, 'videos');
   const itemsQuery = query(videosCol, orderBy('created'))
   const listSnapshot = await getDocs(itemsQuery);
-  const list = listSnapshot.docs.map(doc => doc.data());
+  const list = listSnapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data()
+  }));
   return list;
 }
 
@@ -40,3 +45,7 @@ export const streamVideos = (snapshot, error) => {
   const itemsQuery = query(videosCol, orderBy('created'))
   return onSnapshot(itemsQuery, snapshot, error);
 };
+
+export const deleteVideo = async (id) => {
+  deleteDoc(doc(db, 'videos', id));
+}
